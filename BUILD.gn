@@ -1,0 +1,48 @@
+# CrystalDMI
+
+import("//build/config/precompiled_header.gni")
+import("//build/config/static_shared.gni")
+import("//build/config/win/manifest.gni")
+
+precompiled_header("precompiled") {
+  precompiled_header = "stdafx.h"
+  precompiled_source = "stdafx.cc"
+}
+
+# CrystalDMI ported to GN/Ninja!
+executable("crystaldmi") {
+  configs -= [ "//build/config/win:console", ]
+  configs += [
+    "//build/config/win:windowed",
+    ":crystaldmi_config",
+    ":precompiled",
+  ]
+
+  sources = [
+    "crystal_dmi.cc",
+    "crystal_dmi.h",
+    "crystal_dmi.rc",
+    "crystal_dmi_dlg.cc",
+    "crystal_dmi_dlg.h",
+    "ols_api_init.h",
+    "ols_api_init_def.h",
+    "ols_def.h",
+    "resource.h",
+    "stdafx.h",
+  ]
+
+  deps = [ ":crystaldmi_manifest" ]
+}
+
+windows_manifest("crystaldmi_manifest") {
+  sources = [ as_invoker_manifest, ]
+
+  if (use_common_controls) {
+    sources += [ common_controls_manifest, ]
+  }
+}
+
+config("crystaldmi_config") {
+  defines = [
+  ]
+}

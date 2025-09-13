@@ -3,7 +3,7 @@
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{bb74608f-a1d6-4f8d-af0f-74c6632d7311}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+      <Extensions>cc;cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{e5af4aa2-9cea-4ea6-8c88-22ba13eec7d1}</UniqueIdentifier>
@@ -11,45 +11,45 @@
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{8fc8e0fc-d290-414a-8526-a0d66d426475}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+      <Extensions>ico;res;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CrystalDMI.cpp">
+    <ClCompile Include="crystal_dmi.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CrystalDMIDlg.cpp">
+    <ClCompile Include="crystal_dmi_dlg.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StdAfx.cpp">
+    <ClCompile Include="stdafx.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="CrystalDMI.rc">
+    <ResourceCompile Include="crystal_dmi.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CrystalDMI.h">
+    <ClInclude Include="crystal_dmi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CrystalDMIDlg.h">
+    <ClInclude Include="crystal_dmi_dlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OlsApiInit.h">
+    <ClInclude Include="ols_api_init.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OlsApiInitDef.h">
+    <ClInclude Include="ols_api_init.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OlsDef.h">
+    <ClInclude Include="ols_def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StdAfx.h">
+    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,7 +57,7 @@
     <None Include="res\CrystalDMI.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\CrystalDMI.rc2">
+    <None Include="res\crystal_dmi.rc2">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="manifest.xml" />

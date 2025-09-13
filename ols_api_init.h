@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "OlsApiInitDef.h"
+#include "ols_api_init_def.h"
 
 //-----------------------------------------------------------------------------
 //

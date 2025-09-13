@@ -8,8 +8,8 @@
 /*---------------------------------------------------------------------------*/
 
 #include "stdafx.h"
-#include "CrystalDMI.h"
-#include "CrystalDMIDlg.h"
+#include "crystal_dmi.h"
+#include "crystal_dmi_dlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

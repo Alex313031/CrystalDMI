@@ -8,11 +8,11 @@
 /*-----------------------------------------------------------------------------*/
 
 #include "stdafx.h"
-#include "CrystalDMI.h"
-#include "CrystalDMIDlg.h"
+#include "crystal_dmi.h"
+#include "crystal_dmi_dlg.h"
 
-#include "OlsDef.h"
-#include "OlsApiInit.h"
+#include "ols_def.h"
+#include "ols_api_init.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
