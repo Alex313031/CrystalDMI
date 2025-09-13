@@ -13,7 +13,7 @@
 #define VC_EXTRALEAN		// Windows ヘッダーから殆ど使用されないスタッフを除外します。
 
 #ifndef WINVER				// Allow use of features specific to Windows XP or later.
-#define WINVER 0x0500		// Change this to the appropriate value to target other versions of Windows.
+#define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
 #endif
 
 #include <afxwin.h>         // MFC のコアおよび標準コンポーネント

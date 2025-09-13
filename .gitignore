@@ -12,7 +12,9 @@ Thumbs.db
 
 # Output directories
 /out*
+/debug/
 /release/
+/release64/
 /dist/
 
 # Built Files
