@@ -38,7 +38,10 @@ executable("crystaldmi") {
     "stdafx.h",
   ]
 
-  deps = [ ":crystaldmi_manifest" ]
+  deps = [
+    ":crystaldmi_manifest",
+    #":winring0",
+  ]
 }
 
 windows_manifest("crystaldmi_manifest") {
@@ -51,17 +54,30 @@ windows_manifest("crystaldmi_manifest") {
 
 # Reverse lib linking order for ATL!
 config("crystaldmi_config") {
-  defines = [
+  defines = []
+  ldflags = []
+  libs = []
+  defines += [
+    "_SECURE_ATL",
   ]
-  ldflags = [
-    "/NODEFAULTLIB:uafxcwd.lib",
-    "/NODEFAULTLIB:libcmtd.lib",
-  ]
-  libs = [
-    "uafxcwd.lib",
-    "libcmtd.lib",
-  ]
-}
-
-shared_library("winring0") {
+  if (is_debug) {
+    defines += [ "RUN_TIME_DYNAMIC_LINKING", ]
+    ldflags += [
+      "/NODEFAULTLIB:uafxcwd.lib",
+      "/NODEFAULTLIB:libcmtd.lib",
+    ]
+    libs += [
+      "uafxcwd.lib",
+      "libcmtd.lib",
+    ]
+  } else {
+    ldflags += [
+      "/NODEFAULTLIB:uafxcw.lib",
+      "/NODEFAULTLIB:libcmt.lib",
+    ]
+    libs += [
+      "uafxcw.lib",
+      "libcmt.lib",
+    ]
+  }
 }
