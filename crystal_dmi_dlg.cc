@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------*/
+ï»¿/*-----------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : http://crystalmark.info/
@@ -53,12 +53,12 @@ BEGIN_MESSAGE_MAP(CCrystalDMIDlg, CDialog)
 	//{{AFX_MSG_MAP(CCrystalDMIDlg)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_CBN_SELCHANGE(IDC_SELECT, OnSelchangeSelect)
-	ON_COMMAND(IDM_COPY_TEXT, OnCopyText)
-	ON_COMMAND(IDM_CRYSTAL_DEW_WORLD, OnCrystalDewWorld)
-	ON_COMMAND(IDM_ENGLISH, OnEnglish)
-	ON_COMMAND(IDM_EXIT, OnExit)
-	ON_COMMAND(IDM_JAPANESE, OnJapanese)
+	ON_CBN_SELCHANGE(IDC_SELECT, &CCrystalDMIDlg::OnSelchangeSelect)
+	ON_COMMAND(IDM_COPY_TEXT, &CCrystalDMIDlg::OnCopyText)
+	ON_COMMAND(IDM_CRYSTAL_DEW_WORLD, &CCrystalDMIDlg::OnCrystalDewWorld)
+	ON_COMMAND(IDM_ENGLISH, &CCrystalDMIDlg::OnEnglish)
+	ON_COMMAND(IDM_EXIT, &CCrystalDMIDlg::OnExit)
+	ON_COMMAND(IDM_JAPANESE, &CCrystalDMIDlg::OnJapanese)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -88,7 +88,7 @@ static CString DmiString(DmiHeader* dmi, UCHAR id, BOOL rn = TRUE)
 	}
 	cstr = p;
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 
 	return cstr;
@@ -97,9 +97,9 @@ static CString DmiString(DmiHeader* dmi, UCHAR id, BOOL rn = TRUE)
 static CString DmiStringB(BYTE b, BOOL rn = TRUE)
 {
 	static CString cstr;
-	cstr.Format("%d", b);
+	cstr.Format(_T("%d"), b);
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 	return cstr;
 }
@@ -107,9 +107,9 @@ static CString DmiStringB(BYTE b, BOOL rn = TRUE)
 static CString DmiStringW(WORD w, BOOL rn = TRUE)
 {
 	static CString cstr;
-	cstr.Format("%d", w);
+	cstr.Format(_T("%d"), w);
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 	return cstr;
 }
@@ -117,9 +117,9 @@ static CString DmiStringW(WORD w, BOOL rn = TRUE)
 static CString DmiStringD(DWORD d, BOOL rn = TRUE)
 {
 	static CString cstr;
-	cstr.Format("%d", d);
+	cstr.Format(_T("%d"), d);
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 	return cstr;
 }
@@ -130,17 +130,17 @@ static CString DmiStringBX(BYTE b, DWORD type = 0, BOOL rn = TRUE)
 	switch (type)
 	{
 	case 0:
-		cstr.Format("%02Xh (%d)", b, b);
+		cstr.Format(_T("%02Xh (%d)"), b, b);
 		break;
 	case 1:
-		cstr.Format("%02X", b);
+		cstr.Format(_T("%02X"), b);
 		break;
 	case 2:
-		cstr.Format("%02Xh", b);
+		cstr.Format(_T("%02Xh"), b);
 		break;
 	}
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 	return cstr;
 }
@@ -151,24 +151,24 @@ static CString DmiStringWX(WORD w, DWORD type = 0, BOOL rn = TRUE)
 	switch (type)
 	{
 	case 0:
-		cstr.Format("%04Xh (%d)", w, w);
+		cstr.Format(_T("%04Xh (%d)"), w, w);
 		break;
 	case 1:
-		cstr.Format("%04X", w);
+		cstr.Format(_T("%04X"), w);
 		break;
 	case 2:
-		cstr.Format("%04Xh", w);
+		cstr.Format(_T("%04Xh"), w);
 		break;
 	case 3:
 		if(w >= 0xFFFE){
-			cstr.Format("N/A");
+			cstr.Format(_T("N/A"));
 		}else{
-			cstr.Format("%04Xh",w);
+			cstr.Format(_T("%04Xh"),w);
 		}
 		break;
 	}
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 	return cstr;
 }
@@ -179,17 +179,17 @@ static CString DmiStringDX(DWORD d, DWORD type = 0, BOOL rn = TRUE)
 	switch (type)
 	{
 	case 0:
-		cstr.Format("%08Xh (%d)", d, d);
+		cstr.Format(_T("%08Xh (%d)"), d, d);
 		break;
 	case 1:
-		cstr.Format("%08X", d);
+		cstr.Format(_T("%08X"), d);
 		break;
 	case 2:
-		cstr.Format("%08Xh", d);
+		cstr.Format(_T("%08Xh"), d);
 		break;
 	}
 	if(rn){
-		cstr += "\r\n";
+		cstr += _T("\r\n");
 	}
 	return cstr;
 }
@@ -282,24 +282,24 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 		break;
 	}
 
-	char str[256];
+	wchar_t str[256];
 	CString cstr;
 	UCHAR *d = NULL;
 // Init m_path & m_ini 
-	char* ptrEnd;
+	wchar_t* ptrEnd;
 	::GetModuleFileName(NULL, m_path, MAX_PATH);
 	::GetModuleFileName(NULL, m_ini, MAX_PATH);
-	if ((ptrEnd = strrchr(m_path, '\\')) != NULL){
+	if ((ptrEnd = wcsrchr(m_path, _T('\\'))) != NULL){
 		*ptrEnd = '\0';
 	}
-	if ((ptrEnd = strrchr(m_ini, '.')) != NULL){
+	if ((ptrEnd = wcsrchr(m_ini, _T('.'))) != NULL){
 		*ptrEnd = '\0';
-		_tcscat_s(m_ini, MAX_PATH, ".ini");
+		_tcscat_s(m_ini, MAX_PATH, _T(".ini"));
 	}
 	
 // Set Language
-	GetPrivateProfileString("Setting", "Language", "en", str, 256, m_ini);
-	if(strcmp(str,"en") == 0){
+	GetPrivateProfileString(_T("Setting"), _T("Language"), _T("en"), str, 256, m_ini);
+	if(wcscmp(str, _T("en")) == 0){
 		gLanguage = ENGLISH;
 	}else{
 		gLanguage = JAPANESE;
@@ -311,13 +311,13 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 		OnJapanese();
 	}
 
-	cstr.Format("%s %s%s", CRYSTAL_DMI_PRODUCT, CRYSTAL_DMI_VERSION, CRYSTAL_DMI_STATUS);
+	cstr.Format(_T("%s %s%s"), CRYSTAL_DMI_PRODUCT, CRYSTAL_DMI_VERSION, CRYSTAL_DMI_STATUS);
 	SetWindowText(cstr);
 
 	UCHAR b[MAP_MEMORY_SIZE];
 
 	if(ReadPhysicalMemory(0x000F0000, b, MAP_MEMORY_SIZE, sizeof(UCHAR)) == 0){
-		MessageBox("FAILED ReadPhysicalMemory.");
+		MessageBox(_T("FAILED ReadPhysicalMemory."));
 		EndDialog(0);
 		return FALSE;
 	}
@@ -368,14 +368,14 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(CheckSum(p, 0xF)){
 				Flag = TRUE;
 			}
-			m_Select.AddString(" SMBIOS/DMI Information");
+			m_Select.AddString(_T(" SMBIOS/DMI Information"));
 			break;
 		}
 		p+=16;
 	}
 
 	if(Flag == FALSE){
-		MessageBox("Not Found SMBIOS/DMI Information...");
+		MessageBox(_T("Not Found SMBIOS/DMI Information..."));
 		EndDialog(0);
 		return FALSE;
 	}
@@ -405,7 +405,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			c[1] += "BIOS Version                   : " + DmiString(dmi, p[5]);
 			c[1] += "BIOS Starting Address Segment  : " + DmiStringWX(MAKEWORD(p[6], p[7]), 2, 1);
 			c[1] += "BIOS Release Date              : " + DmiString(dmi, p[8]);
-			cstr.Format("%d KB\r\n", ((p[9] + 1) << 16 ) / 1024);
+			cstr.Format(_T("%d KB\r\n"), ((p[9] + 1) << 16 ) / 1024);
 			c[1] += "BIOS ROM Size                  : " + cstr;
 			c[1] += "BIOS Characteristics           : " + DmiStringBX(p[0x11], 1, 0)
 														+ DmiStringBX(p[0x10], 1, 0)
@@ -473,7 +473,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 				if((ch >>  6) & 0x1){c[1] += " - ""Reserved""\r\n";}
 				if((ch >>  7) & 0x1){c[1] += " - ""Reserved""\r\n";}
 			}
-			if(flag[1]){m_Select.AddString(" 00 BIOS Information");flag[1] = FALSE;}
+			if(flag[1]){m_Select.AddString(_T(" 00 BIOS Information"));flag[1] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 01 System Information
@@ -521,7 +521,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			default:c[2] += "Unknown";				break;
 			}
 			c[2] += "\r\n";
-			if(flag[2]){m_Select.AddString(" 01 System Information");flag[2] = FALSE;}
+			if(flag[2]){m_Select.AddString(_T(" 01 System Information"));flag[2] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 02 Base Board Information
@@ -583,7 +583,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 					c[3] += " - " + DmiStringWX(MAKEWORD(p[0xF + i * 2], p[0xF + i * 2 + 1]), 2);
 				}
 			}
-			if(flag[3]){m_Select.AddString(" 02 Base Board Information");flag[3] = FALSE;}
+			if(flag[3]){m_Select.AddString(_T(" 02 Base Board Information"));flag[3] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 03 System Enclosure or Chassis
@@ -679,7 +679,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(p[1] > 0x11){
 				c[4] += "Height                         : " + DmiStringBX(p[0x11], 0, 1);
 				if(p[0x11] > 0){
-					cstr.Format("%.3f inches / %.3f cm", p[0x11] * 1.75, p[0x11] * 4.445);
+					cstr.Format(_T("%.3f inches / %.3f cm"), p[0x11] * 1.75, p[0x11] * 4.445);
 					c[4] += cstr;
 				}
 				c[4] += "\r\n";
@@ -688,7 +688,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 				c[4] += "Number of Power Cords          : " + DmiStringBX(p[0x12]);
 			}
 			// 0x13/0x14/0x15 are not supported!!
-			if(flag[4]){m_Select.AddString(" 03 System Enclosure or Chassis");flag[4] = FALSE;}
+			if(flag[4]){m_Select.AddString(_T(" 03 System Enclosure or Chassis"));flag[4] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 04 Processor Information
@@ -860,7 +860,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			c[5] += "Voltage                        : ";
 			if((p[0x11] >> 7) & 0x1){
 				if((p[0x11] & 0x7F) != 0){
-					cstr.Format("%.1fV", (p[0x11] & 0x7F) / 10.0);
+					cstr.Format(_T("%.1fV"), (p[0x11] & 0x7F) / 10.0);
 					c[5] += cstr;
 				}else{
 					c[5] += "Unknown";
@@ -921,7 +921,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			case 0x18: c[5] += "Socket F (1207)";			break;
 			default  : 
 				CString cstr;
-				cstr.Format("[0x%02X]", p[0x19]);
+				cstr.Format(_T("[0x%02X]"), p[0x19]);
 				c[5] += cstr;
 				break;
 			}
@@ -962,7 +962,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 				if((ch >>  7) & 0x1){c[5] += " - ""Reserved""\r\n";}
 			}
 
-			if(flag[5]){m_Select.AddString(" 04 Processor Information");flag[5] = FALSE;}
+			if(flag[5]){m_Select.AddString(_T(" 04 Processor Information"));flag[5] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 05 Memory Controller Information (Obsolete)
@@ -1015,7 +1015,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			}
 			c[6] += "\r\n";
 
-			cstr.Format("%d MB\r\n", 1 << p[0x8]);
+			cstr.Format(_T("%d MB\r\n"), 1 << p[0x8]);
 			c[6] += "Maximum Memory Module Size     : " + cstr;
 			c[6] += "Supported Speeds               : " + DmiStringWX(MAKEWORD(p[0x9], p[0xA]), 2);
 			ch = MAKEWORD(p[0x9], p[0xA]);
@@ -1059,7 +1059,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if((ch >>  4) & 0x1){c[6] += " - ""Double Bit Error Correcting""\r\n";}
 			if((ch >>  5) & 0x1){c[6] += " - ""Error Scrubbing""\r\n";}
 
-			if(flag[6]){m_Select.AddString(" 05 Memory Controller Information");flag[6] = FALSE;}
+			if(flag[6]){m_Select.AddString(_T(" 05 Memory Controller Information"));flag[6] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 06 Memory Module Information (Obsolete)
@@ -1069,15 +1069,15 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			c[7] += "Socket Designation             : " + DmiString(dmi, p[0x4]);
 			c[7] += "Bank Connections               : ";
 			if((p[0x5] & 0xF) != 0xF && (p[0x5] >> 4) != 0xF){
-				cstr.Format("%d & %d", p[0x5] >> 4, p[0x5] & 0xF);
+				cstr.Format(_T("%d & %d"), p[0x5] >> 4, p[0x5] & 0xF);
 				c[7] += cstr;
 			}
 			if((p[0x5] & 0xF) != 0xF && (p[0x5] >> 4) == 0xF){
-				cstr.Format("%d", p[0x5] & 0xF);
+				cstr.Format(_T("%d"), p[0x5] & 0xF);
 				c[7] += cstr;
 			}
 			if((p[0x5] & 0xF) == 0xF && (p[0x5] >> 4) != 0xF){
-				cstr.Format("%d", p[0x5] >> 4);
+				cstr.Format(_T("%d"), p[0x5] >> 4);
 				c[7] += cstr;
 			}
 			if((p[0x5] & 0xF) == 0xF && (p[0x5] >> 4) == 0xF){
@@ -1087,7 +1087,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			
 			c[7] += "Current Speed                  : ";
 			if(p[0x6] != 0){
-				cstr.Format("%d ns", p[6]);
+				cstr.Format(_T("%d ns"), p[6]);
 				c[7] += cstr;
 			}else{
 				c[7] += "Unknown";
@@ -1112,7 +1112,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			else if((p[0x9] & 0x7F) == 0x7D){c[7] += "Module is installed, but no memory has been enabled";}
 			else if((p[0x9] & 0x7F) == 0x7F){c[7] += "Not installed";}
 			else {
-				cstr.Format("%d MB", 1 << (p[0x9] & 0x7F) );
+				cstr.Format(_T("%d MB"), 1 << (p[0x9] & 0x7F) );
 				c[7] += cstr;
 				if((p[0x9] >> 7) & 0x1){
 					c[7] += " [double-bank]";
@@ -1121,7 +1121,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 				}
 			}
 			c[7] += "\r\n";
-			if(flag[7]){m_Select.AddString(" 06 Memory Module Information");flag[7] = FALSE;}
+			if(flag[7]){m_Select.AddString(_T(" 06 Memory Module Information"));flag[7] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 07 Cache Information
@@ -1162,27 +1162,27 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			}
 			c[8] += "\r\n";
 			c[8] += " + Cache Level                 : ";
-			cstr.Format("L%d", (word & 0x7) + 1);
+			cstr.Format(_T("L%d"), (word & 0x7) + 1);
 			c[8] += cstr;
 			c[8] += "\r\n";
 
 			c[8] += "Maximum Cache Size             : ";
 			word = MAKEWORD(p[0x7], p[0x8]);
 			if((word >> 15) & 0x1){
-				cstr.Format("%d KB", (word & 0x7FFF) * 64);
+				cstr.Format(_T("%d KB"), (word & 0x7FFF) * 64);
 				c[8] += cstr;
 			}else{
-				cstr.Format("%d KB", (word & 0x7FFF) * 1);
+				cstr.Format(_T("%d KB"), (word & 0x7FFF) * 1);
 				c[8] += cstr;
 			}
 			c[8] += "\r\n";
 			c[8] += "Installed Size                 : ";
 			word = MAKEWORD(p[0x9], p[0xA]);
 			if((word >> 15) & 0x1){
-				cstr.Format("%d KB", (word & 0x7FFF) * 64);
+				cstr.Format(_T("%d KB"), (word & 0x7FFF) * 64);
 				c[8] += cstr;
 			}else{
-				cstr.Format("%d KB", (word & 0x7FFF) * 1);
+				cstr.Format(_T("%d KB"), (word & 0x7FFF) * 1);
 				c[8] += cstr;
 			}
 			c[8] += "\r\n";
@@ -1211,7 +1211,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(p[0xF] == 0){
 				c[8] += "Unknown";
 			}else{
-				cstr.Format("%d ns", p[0xF]);
+				cstr.Format(_T("%d ns"), p[0xF]);
 				c[8] += cstr;
 			}
 			c[8] += "\r\n";
@@ -1249,7 +1249,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			case 8: c[8] += "16-way Set-Associative";	break;
 			}
 			c[8] += "\r\n";
-			if(flag[8]){m_Select.AddString(" 07 Cache Information");flag[8] = FALSE;}
+			if(flag[8]){m_Select.AddString(_T(" 07 Cache Information"));flag[8] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 08 Port Connector Information
@@ -1387,7 +1387,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			case 0xFF: c[9] += "Other";								break;
 			}
 			c[9] += "\r\n";
-			if(flag[9]){m_Select.AddString(" 08 Port Connector Information");flag[9] = FALSE;}
+			if(flag[9]){m_Select.AddString(_T(" 08 Port Connector Information"));flag[9] = FALSE;}
 			break;		
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 09 System Slots
@@ -1492,14 +1492,14 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 				c[10] += "Function Number                : " + DmiStringB((p[0x10] & 7)); // bit 3:0
 			}
 	
-			if(flag[10]){m_Select.AddString(" 09 System Slots");flag[10] = FALSE;}
+			if(flag[10]){m_Select.AddString(_T(" 09 System Slots"));flag[10] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 10 On Board Devices Information (obsolete)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 10:
 			c[11] += PrintHeader(dmi);
-			if(flag[11]){m_Select.AddString(" 10 On Board Devices Information  [don't support]");flag[11] = FALSE;}
+			if(flag[11]){m_Select.AddString(_T(" 10 On Board Devices Information  [don't support]"));flag[11] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 11 OEM Strings
@@ -1508,10 +1508,10 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			c[12] += PrintHeader(dmi);
 			c[12] += "Count                          : " + DmiStringBX(p[0x4]);
 			for(i = 1; i <= p[0x4]; i++){
-				cstr.Format("%2d",i);
+				cstr.Format(_T("%2d"),i);
 				c[12] += "OEM String " + cstr + "                  : " + DmiString(dmi,i);
 			}
-			if(flag[12]){m_Select.AddString(" 11 OEM Strings");flag[12] = FALSE;}
+			if(flag[12]){m_Select.AddString(_T(" 11 OEM Strings"));flag[12] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 12 System Configuration Options
@@ -1519,7 +1519,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 		case 12:
 			c[13] += PrintHeader(dmi);
 			c[13] += "Count                          : " + DmiStringBX(p[0x4]);
-			if(flag[13]){m_Select.AddString(" 12 System Configuration Options [don't support]");flag[13] = FALSE;}
+			if(flag[13]){m_Select.AddString(_T(" 12 System Configuration Options [don't support]"));flag[13] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 13 BIOS Language Information
@@ -1555,21 +1555,21 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			for(i = 1; i <= p[0x4]; i++){
 			c[14] += "Available Languages            : " + DmiString(dmi,i);
 			}
-			if(flag[14]){m_Select.AddString(" 13 BIOS Language Information");flag[14] = FALSE;}
+			if(flag[14]){m_Select.AddString(_T(" 13 BIOS Language Information"));flag[14] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 14 Group Associations
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 14:
 			c[15] += PrintHeader(dmi);
-			if(flag[15]){m_Select.AddString(" 14 Group Associations [don't support]");flag[15] = FALSE;}
+			if(flag[15]){m_Select.AddString(_T(" 14 Group Associations [don't support]"));flag[15] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 15 System Event Log
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 15:
 			c[16] += PrintHeader(dmi);
-			if(flag[16]){m_Select.AddString(" 15 System Event Log [don't support]");flag[16] = FALSE;}
+			if(flag[16]){m_Select.AddString(_T(" 15 System Event Log [don't support]"));flag[16] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 16 Physical Memory Array
@@ -1621,14 +1621,14 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(dword == 0x80000000){
 				c[17] += "Unknown";
 			}else{
-				cstr.Format("%d MB",dword / 1024);
+				cstr.Format(_T("%d MB"),dword / 1024);
 				c[17] += cstr;
 			}
 			c[17] += "\r\n";
 			c[17] += "Memory Error Information Handle: " + DmiStringWX(MAKEWORD(p[0xB], p[0xC]), 3); 
 			c[17] += "Number of Memory Devices       : " + DmiStringWX(MAKEWORD(p[0xD], p[0xE])); 
 
-			if(flag[17]){m_Select.AddString(" 16 Physical Memory Array");flag[17] = FALSE;}
+			if(flag[17]){m_Select.AddString(_T(" 16 Physical Memory Array"));flag[17] = FALSE;}
 			break;		
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 17 Memory Device
@@ -1642,7 +1642,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(word == 0xFFFF){
 				c[18] += "Unknown";
 			}else{
-				cstr.Format("%d bit", word);
+				cstr.Format(_T("%d bit"), word);
 				c[18] += cstr;
 			}
 			c[18] += "\r\n";
@@ -1651,7 +1651,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(word == 0xFFFF){
 				c[18] += "Unknown";
 			}else{
-				cstr.Format("%d bit", word);
+				cstr.Format(_T("%d bit"), word);
 				c[18] += cstr;
 			}
 			c[18] += "\r\n";
@@ -1662,10 +1662,10 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			}else if(word == 0xFFFF){
 				c[18] += "Unknown";
 			}else if((word >> 15) & 0x1){
-				cstr.Format("%d KB", (word & 0x7FFF));
+				cstr.Format(_T("%d KB"), (word & 0x7FFF));
 				c[18] += cstr;
 			}else{
-				cstr.Format("%d MB", (word & 0x7FFF));
+				cstr.Format(_T("%d MB"), (word & 0x7FFF));
 				c[18] += cstr;
 			}
 			c[18] += "\r\n";
@@ -1751,14 +1751,14 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			if(p[1] > 0x1B){
 				c[18] += "Attributes                     : " + DmiStringB(p[0x1B]);
 			}
-			if(flag[18]){m_Select.AddString(" 17 Memory Device");flag[18] = FALSE;}
+			if(flag[18]){m_Select.AddString(_T(" 17 Memory Device"));flag[18] = FALSE;}
 			break;	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 18 32-bit Memory Error Information
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 18:
 			c[19] += PrintHeader(dmi);
-			if(flag[19]){m_Select.AddString(" 18 32-bit Memory Error Information [don't support]");flag[19] = FALSE;}
+			if(flag[19]){m_Select.AddString(_T(" 18 32-bit Memory Error Information [don't support]"));flag[19] = FALSE;}
 			break;	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 19 Memory Array Mapped Address
@@ -1770,7 +1770,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			c[20] += "Memory Array Handle            : " + DmiStringWX(MAKEWORD(p[0xC], p[0xD]), 2);
 			c[20] += "Partition Width                : " + DmiStringBX(p[0xE]);
 
-			if(flag[20]){m_Select.AddString(" 19 Memory Array Mapped Address");flag[20] = FALSE;}
+			if(flag[20]){m_Select.AddString(_T(" 19 Memory Array Mapped Address"));flag[20] = FALSE;}
 			break;				
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 20 Memory Device Mapped Address
@@ -1805,84 +1805,84 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			}else{
 				c[21] += DmiStringBX(p[0x12]);
 			}
-			if(flag[21]){m_Select.AddString(" 20 Memory Device Mapped Address");flag[21] = FALSE;}
+			if(flag[21]){m_Select.AddString(_T(" 20 Memory Device Mapped Address"));flag[21] = FALSE;}
 			break;	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 21 Built-in Pointing Device
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 21:
 			c[22] += PrintHeader(dmi);
-			if(flag[22]){m_Select.AddString(" 21 Built-in Pointing Device [don't support]");flag[22] = FALSE;}
+			if(flag[22]){m_Select.AddString(_T(" 21 Built-in Pointing Device [don't support]"));flag[22] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 22 Portable Battery
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 22:
 			c[23] += PrintHeader(dmi);
-			if(flag[23]){m_Select.AddString(" 22 Portable Battery [don't support]");flag[23] = FALSE;}
+			if(flag[23]){m_Select.AddString(_T(" 22 Portable Battery [don't support]"));flag[23] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 23 System Reset
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 23:
 			c[24] += PrintHeader(dmi);
-			if(flag[24]){m_Select.AddString(" 23 System Reset [don't support]");flag[24] = FALSE;}
+			if(flag[24]){m_Select.AddString(_T(" 23 System Reset [don't support]"));flag[24] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 24 Hardware Security
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 24:
 			c[25] += PrintHeader(dmi);
-			if(flag[25]){m_Select.AddString(" 24 Hardware Security [don't support]");flag[25] = FALSE;}
+			if(flag[25]){m_Select.AddString(_T(" 24 Hardware Security [don't support]"));flag[25] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 25 System Power Controls
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 25:
 			c[26] += PrintHeader(dmi);
-			if(flag[26]){m_Select.AddString(" 25 System Power Controls [don't support]");flag[26] = FALSE;}
+			if(flag[26]){m_Select.AddString(_T(" 25 System Power Controls [don't support]"));flag[26] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 26 Voltage Probe
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 26:
 			c[27] += PrintHeader(dmi);
-			if(flag[27]){m_Select.AddString(" 26 Voltage Probe [don't support]");flag[27] = FALSE;}
+			if(flag[27]){m_Select.AddString(_T(" 26 Voltage Probe [don't support]"));flag[27] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 27 Cooling Device
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 27:
 			c[28] += PrintHeader(dmi);
-			if(flag[28]){m_Select.AddString(" 27 Cooling Device [don't support]");flag[28] = FALSE;}
+			if(flag[28]){m_Select.AddString(_T(" 27 Cooling Device [don't support]"));flag[28] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 28 Temperature Probe
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 28:
 			c[29] += PrintHeader(dmi);
-			if(flag[29]){m_Select.AddString(" 28 Temperature Probe [don't support]");flag[29] = FALSE;}
+			if(flag[29]){m_Select.AddString(_T(" 28 Temperature Probe [don't support]"));flag[29] = FALSE;}
 			break;		
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 29 Electrical Current Probe
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 29:
 			c[30] += PrintHeader(dmi);
-			if(flag[30]){m_Select.AddString(" 29 Electrical Current Probe [don't support]");flag[30] = FALSE;}
+			if(flag[30]){m_Select.AddString(_T(" 29 Electrical Current Probe [don't support]"));flag[30] = FALSE;}
 			break;	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 30 Out-of-Band Remote Access
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 30:
 			c[31] += PrintHeader(dmi);
-			if(flag[31]){m_Select.AddString(" 30 Out-of-Band Remote Access [don't support]");flag[31] = FALSE;}
+			if(flag[31]){m_Select.AddString(_T(" 30 Out-of-Band Remote Access [don't support]"));flag[31] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 31 Boot Integrity Services (BIS) Entry Point
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 31:
 			c[32] += PrintHeader(dmi);
-			if(flag[32]){m_Select.AddString(" 31 Boot Integrity Services (BIS) Entry Point [don't support]");flag[32] = FALSE;}
+			if(flag[32]){m_Select.AddString(_T(" 31 Boot Integrity Services (BIS) Entry Point [don't support]"));flag[32] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 32 System Boot Information
@@ -1910,84 +1910,84 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 			case 0x08: c[33] += "A system watchdog timer expired, causing the system to reboot";	break;
 			}
 			c[33] += "\r\n";
-			if(flag[33]){m_Select.AddString(" 32 System Boot Information");flag[33] = FALSE;}
+			if(flag[33]){m_Select.AddString(_T(" 32 System Boot Information"));flag[33] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 33 64-bit Memory Error Information
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 33:
 			c[34] += PrintHeader(dmi);
-			if(flag[34]){m_Select.AddString(" 33 64-bit Memory Error Information [don't support]");flag[34] = FALSE;}
+			if(flag[34]){m_Select.AddString(_T(" 33 64-bit Memory Error Information [don't support]"));flag[34] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 34 Management Device
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 34:
 			c[35] += PrintHeader(dmi);
-			if(flag[35]){m_Select.AddString(" 34 Management Device [don't support]");flag[35] = FALSE;}
+			if(flag[35]){m_Select.AddString(_T(" 34 Management Device [don't support]"));flag[35] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 35 Management Device Component
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 35:
 			c[36] += PrintHeader(dmi);
-			if(flag[36]){m_Select.AddString(" 35 Management Device Component [don't support]");flag[36] = FALSE;}
+			if(flag[36]){m_Select.AddString(_T(" 35 Management Device Component [don't support]"));flag[36] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 36 Management Device Threshold Data
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 36:
 			c[37] += PrintHeader(dmi);
-			if(flag[37]){m_Select.AddString(" 36 Management Device Threshold Data [don't support]");flag[37] = FALSE;}
+			if(flag[37]){m_Select.AddString(_T(" 36 Management Device Threshold Data [don't support]"));flag[37] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 37 Memory Channel
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 37:
 			c[38] += PrintHeader(dmi);
-			if(flag[38]){m_Select.AddString(" 37 Memory Channel [don't support]");flag[38] = FALSE;}
+			if(flag[38]){m_Select.AddString(_T(" 37 Memory Channel [don't support]"));flag[38] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 38 IPMI Device Information
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 38:
 			c[39] += PrintHeader(dmi);
-			if(flag[39]){m_Select.AddString(" 38 IPMI Device Information [don't support]");flag[39] = FALSE;}
+			if(flag[39]){m_Select.AddString(_T(" 38 IPMI Device Information [don't support]"));flag[39] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 39 System Power Supply
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 39:
 			c[40] += PrintHeader(dmi);
-			if(flag[40]){m_Select.AddString(" 39 System Power Supply [don't support]");flag[40] = FALSE;}
+			if(flag[40]){m_Select.AddString(_T(" 39 System Power Supply [don't support]"));flag[40] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 40 Additional Information (2.6 or later)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 40:
 			c[41] += PrintHeader(dmi);
-			if(flag[41]){m_Select.AddString(" 40 Additional Information [don't support]");flag[41] = FALSE;}
+			if(flag[41]){m_Select.AddString(_T(" 40 Additional Information [don't support]"));flag[41] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 41 Additional Information (2.6 or later)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 41:
 			c[42] += PrintHeader(dmi);
-			if(flag[42]){m_Select.AddString(" 41 Onboard Devices Extended Information [don't support]");flag[42] = FALSE;}
+			if(flag[42]){m_Select.AddString(_T(" 41 Onboard Devices Extended Information [don't support]"));flag[42] = FALSE;}
 			break;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // 126 Inactive
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 126:
 			c[127] += PrintHeader(dmi);
-			if(flag[127]){m_Select.AddString("126 Inactive");flag[127] = FALSE;}
+			if(flag[127]){m_Select.AddString(_T("126 Inactive"));flag[127] = FALSE;}
 			break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 127 End-of-Table
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		case 127:
 			c[128] += PrintHeader(dmi);
-			if(flag[128]){m_Select.AddString("127 End-of-Table");flag[128] = FALSE;}
+			if(flag[128]){m_Select.AddString(_T("127 End-of-Table"));flag[128] = FALSE;}
 			break;
 }
 		// next 
@@ -1997,7 +1997,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 		p = next + 2;
 	}
 
-	m_Select.AddString(" All Information");
+	m_Select.AddString(_T(" All Information"));
 	int number;
 
 		c[ALL_INFORMATION_ID] += "\
@@ -2006,14 +2006,14 @@ BOOL CCrystalDMIDlg::OnInitDialog()
                           Crystal Dew World : http://crystalmark.info/\r\n\
 ----------------------------------------------------------------------\r\n\
 ";
-	c[ALL_INFORMATION_ID].Replace("%PRODUCT%", CRYSTAL_DMI_PRODUCT);
-	c[ALL_INFORMATION_ID].Replace("%VERSION%", CRYSTAL_DMI_VERSION);
-	c[ALL_INFORMATION_ID].Replace("%STATUS%", CRYSTAL_DMI_STATUS);
+	c[ALL_INFORMATION_ID].Replace(_T("%PRODUCT%"), CRYSTAL_DMI_PRODUCT);
+	c[ALL_INFORMATION_ID].Replace(_T("%VERSION%"), CRYSTAL_DMI_VERSION);
+	c[ALL_INFORMATION_ID].Replace(_T("%STATUS%"), CRYSTAL_DMI_STATUS);
 
 	for(i=0; i < m_Select.GetCount() - 1; i++){
 		m_Select.GetLBText(i, cstr);
 		if(i != 0){
-			number = atoi(cstr) + 1;
+			number = _wtoi(cstr) + 1;
 		}else{
 			number = 0;
 		}
@@ -2028,7 +2028,7 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 	m_View.SetWindowText( c[ 0 ] );
 	}catch(...){
 		delete d;
-		MessageBox("Exception!! Please send me bug report.");
+		MessageBox(_T("Exception!! Please send me bug report."));
 		EndDialog(0);
 		return FALSE;
 	}
@@ -2086,7 +2086,7 @@ void CCrystalDMIDlg::OnSelchangeSelect()
 		number = ALL_INFORMATION_ID;
 	}else if(m_Select.GetCurSel() != 0){
 		m_Select.GetLBText(m_Select.GetCurSel(), cstr);
-		number = atoi(cstr) + 1;
+		number = _wtoi(cstr) + 1;
 	}else{
 		number = 0;
 	}
@@ -2099,12 +2099,12 @@ void CCrystalDMIDlg::OnCopyText()
 	if(OpenClipboard())
 	{
 		HGLOBAL clipbuffer;
-		char * buffer;
+		wchar_t * buffer;
 		EmptyClipboard();
 		int size = clip.GetLength() + 1;
 		clipbuffer = GlobalAlloc(GMEM_DDESHARE, size);
-		buffer = (char*)GlobalLock(clipbuffer);
-		_tcscpy_s(buffer, size, LPCSTR(clip));
+		buffer = (wchar_t*)GlobalLock(clipbuffer);
+		_tcscpy_s(buffer, size, LPCTSTR(clip));
 		GlobalUnlock(clipbuffer);
 		SetClipboardData(CF_TEXT, clipbuffer);
 		CloseClipboard();
@@ -2114,15 +2114,15 @@ void CCrystalDMIDlg::OnCopyText()
 /////////////////////////////////////////////////////////////////////////////
 // Open/Execute File
 /////////////////////////////////////////////////////////////////////////////
-static void ExecuteFile(char* FileName)
+static void ExecuteFile(wchar_t* FileName)
 {
-	char path[MAX_PATH], file[MAX_PATH];
-	char* ptrEnd;
+	wchar_t path[MAX_PATH], file[MAX_PATH];
+	wchar_t* ptrEnd;
 	::GetModuleFileName(NULL, path, MAX_PATH);
-	if((ptrEnd = strrchr(path, '\\')) != NULL){
+	if((ptrEnd = wcsrchr(path, _T('\\'))) != NULL){
 		*ptrEnd = '\0';
 	}
-	sprintf_s(file, MAX_PATH, "%s\\%s", path, FileName);
+	swprintf_s(file, MAX_PATH, _T("%s\\%s"), path, FileName);
 	ShellExecute(NULL, NULL, file, NULL, NULL, SW_SHOWNORMAL);	
 }
 
@@ -2145,19 +2145,19 @@ void CCrystalDMIDlg::OnJapanese()
 	gLanguage = JAPANESE;
 	CMenu *menu = GetMenu();
 
-	menu->ModifyMenu(0, MF_BYPOSITION | MF_STRING, 0, "ƒtƒ@ƒCƒ‹ (&F)");
-	menu->ModifyMenu(1, MF_BYPOSITION | MF_STRING, 1, "•ÒW (&P)");
-	menu->ModifyMenu(2, MF_BYPOSITION | MF_STRING, 2, "ƒwƒ‹ƒv (&H)");
+	menu->ModifyMenu(0, MF_BYPOSITION | MF_STRING, 0, L"ãƒ•ã‚¡ã‚¤ãƒ« (&F)");
+	menu->ModifyMenu(1, MF_BYPOSITION | MF_STRING, 1, L"ç·¨é›† (&P)");
+	menu->ModifyMenu(2, MF_BYPOSITION | MF_STRING, 2, L"ãƒ˜ãƒ«ãƒ— (&H)");
 
-	menu->ModifyMenu(IDM_EXIT, MF_STRING, IDM_EXIT, "I—¹ (&E)\tAlt + F4");
-	menu->ModifyMenu(IDM_COPY_TEXT, MF_STRING, IDM_COPY_TEXT, "ƒRƒs[ (&C)\tCtrl + C");
+	menu->ModifyMenu(IDM_EXIT, MF_STRING, IDM_EXIT, L"çµ‚äº† (&E)\tAlt + F4");
+	menu->ModifyMenu(IDM_COPY_TEXT, MF_STRING, IDM_COPY_TEXT, L"ã‚³ãƒ”ãƒ¼ (&C)\tCtrl + C");
 
 	menu->CheckMenuItem(IDM_ENGLISH, MF_UNCHECKED);
 	menu->CheckMenuItem(IDM_JAPANESE, MF_CHECKED);
 	menu->EnableMenuItem(IDM_ENGLISH, MF_ENABLED);
 	menu->EnableMenuItem(IDM_JAPANESE, MF_GRAYED);
 
-	WritePrivateProfileString("Setting", "Language", "jp", m_ini);
+	WritePrivateProfileString(_T("Setting"), _T("Language"), _T("jp"), m_ini);
 	
 	SetMenu(menu);	
 }
@@ -2167,19 +2167,19 @@ void CCrystalDMIDlg::OnEnglish()
 	gLanguage = ENGLISH;
 	CMenu *menu = GetMenu();
 
-	menu->ModifyMenu(0, MF_BYPOSITION | MF_STRING, 0, "&File");
-	menu->ModifyMenu(1, MF_BYPOSITION | MF_STRING, 1, "&Edit");
-	menu->ModifyMenu(2, MF_BYPOSITION | MF_STRING, 2, "&Help");
+	menu->ModifyMenu(0, MF_BYPOSITION | MF_STRING, 0, L"&File");
+	menu->ModifyMenu(1, MF_BYPOSITION | MF_STRING, 1, L"&Edit");
+	menu->ModifyMenu(2, MF_BYPOSITION | MF_STRING, 2, L"&Help");
 
-	menu->ModifyMenu(IDM_EXIT, MF_STRING, IDM_EXIT, "&Exit\tAlt + F4");
-	menu->ModifyMenu(IDM_COPY_TEXT, MF_STRING, IDM_COPY_TEXT, "&Copy\tCtrl + C");
+	menu->ModifyMenu(IDM_EXIT, MF_STRING, IDM_EXIT, L"&Exit\tAlt + F4");
+	menu->ModifyMenu(IDM_COPY_TEXT, MF_STRING, IDM_COPY_TEXT, L"&Copy\tCtrl + C");
 
 	menu->CheckMenuItem(IDM_ENGLISH, MF_CHECKED);
 	menu->CheckMenuItem(IDM_JAPANESE, MF_UNCHECKED);
 	menu->EnableMenuItem(IDM_ENGLISH, MF_GRAYED);
 	menu->EnableMenuItem(IDM_JAPANESE, MF_ENABLED);
 
-	WritePrivateProfileString("Setting", "Language", "en", m_ini);
+	WritePrivateProfileString(_T("Setting"), _T("Language"), _T("en"), m_ini);
 	SetMenu(menu);	
 }
 

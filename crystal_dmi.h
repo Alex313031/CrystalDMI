@@ -28,21 +28,21 @@
 #define		ENGLISH					0x0002
 
 #ifdef _X86_64
-#define		CRYSTAL_DMI_PRODUCT		"CrystalDMI Pure x64 Edition"
-#define		CRYSTAL_DMI_STATUS		"" // Alpha, Beta...
+#define		CRYSTAL_DMI_PRODUCT		_T("CrystalDMI Pure x64 Edition")
+#define		CRYSTAL_DMI_STATUS		_T("") // Alpha, Beta...
 #else
-#define		CRYSTAL_DMI_PRODUCT		"CrystalDMI"
-#define		CRYSTAL_DMI_STATUS		"" // Alpha, Beta...
+#define		CRYSTAL_DMI_PRODUCT		_T("CrystalDMI")
+#define		CRYSTAL_DMI_STATUS		_T("") // Alpha, Beta...
 #endif
 
-#define		CRYSTAL_DMI_VERSION		"1.0.6"
+#define		CRYSTAL_DMI_VERSION		_T("1.0.6")
 
 ////////////
 // URL
 //////////////////////////////////////////
 
-#define URL_JAPANESE	"http://crystalmark.info/"
-#define URL_ENGLISH		"http://crystalmark.info/?lang=en"
+#define URL_JAPANESE	_T("http://crystalmark.info/")
+#define URL_ENGLISH		_T("http://crystalmark.info/?lang=en")
 
 /////////////////////////////////////////////////////////////////////////////
 

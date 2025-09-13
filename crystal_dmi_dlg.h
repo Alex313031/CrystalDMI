@@ -28,8 +28,8 @@ class CCrystalDMIDlg : public CDialog
 {
 public:
 	CCrystalDMIDlg(CWnd* pParent = NULL);
-	char m_ini[MAX_PATH];
-	char m_path[MAX_PATH];
+	wchar_t m_ini[MAX_PATH];
+	wchar_t m_path[MAX_PATH];
 	//{{AFX_DATA(CCrystalDMIDlg)
 	enum { IDD = IDD_CRYSTALDMI_DIALOG };
 	CEdit	m_View;

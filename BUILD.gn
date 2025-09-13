@@ -4,6 +4,13 @@ import("//build/config/precompiled_header.gni")
 import("//build/config/static_shared.gni")
 import("//build/config/win/manifest.gni")
 
+group("crystal_dmi") {
+  public_deps = [
+    ":crystaldmi",
+    #":winring0",
+  ]
+}
+
 precompiled_header("precompiled") {
   precompiled_header = "stdafx.h"
   precompiled_source = "stdafx.cc"
@@ -42,7 +49,19 @@ windows_manifest("crystaldmi_manifest") {
   }
 }
 
+# Reverse lib linking order for ATL!
 config("crystaldmi_config") {
   defines = [
   ]
+  ldflags = [
+    "/NODEFAULTLIB:uafxcwd.lib",
+    "/NODEFAULTLIB:libcmtd.lib",
+  ]
+  libs = [
+    "uafxcwd.lib",
+    "libcmtd.lib",
+  ]
+}
+
+shared_library("winring0") {
 }

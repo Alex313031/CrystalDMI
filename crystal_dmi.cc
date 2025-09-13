@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 BEGIN_MESSAGE_MAP(CCrystalDMIApp, CWinApp)
 	//{{AFX_MSG_MAP(CCrystalDMIApp)
 	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
