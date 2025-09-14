@@ -4,10 +4,10 @@ import("//build/config/precompiled_header.gni")
 import("//build/config/static_shared.gni")
 import("//build/config/win/manifest.gni")
 
-group("crystal_dmi") {
+group("crystal_dmi_all") {
   public_deps = [
-    ":crystaldmi",
-    #":winring0",
+    ":crystal_dmi",
+    "winring0:winring0_all",
   ]
 }
 
@@ -17,34 +17,37 @@ precompiled_header("precompiled") {
 }
 
 # CrystalDMI ported to GN/Ninja!
-executable("crystaldmi") {
+executable("crystal_dmi") {
   configs -= [ "//build/config/win:console", ]
   configs += [
     "//build/config/win:windowed",
-    ":crystaldmi_config",
+    ":crystal_dmi_config",
     ":precompiled",
   ]
 
   sources = [
+    "winring0/source/dll/ols_api_init.h",
+    "winring0/source/dll/ols_api_init_def.h",
+    "winring0/source/dll/ols_def.h",
+  ]
+
+  sources += [
     "crystal_dmi.cc",
     "crystal_dmi.h",
     "crystal_dmi.rc",
     "crystal_dmi_dlg.cc",
     "crystal_dmi_dlg.h",
-    "ols_api_init.h",
-    "ols_api_init_def.h",
-    "ols_def.h",
     "resource.h",
     "stdafx.h",
   ]
 
   deps = [
-    ":crystaldmi_manifest",
-    #":winring0",
+    ":crystal_dmi_manifest",
+    "winring0:winring0",
   ]
 }
 
-windows_manifest("crystaldmi_manifest") {
+windows_manifest("crystal_dmi_manifest") {
   sources = [ as_invoker_manifest, ]
 
   if (use_common_controls) {
@@ -53,15 +56,20 @@ windows_manifest("crystaldmi_manifest") {
 }
 
 # Reverse lib linking order for ATL!
-config("crystaldmi_config") {
+config("crystal_dmi_config") {
   defines = []
   ldflags = []
   libs = []
+  include_dirs = [
+    ".",
+    "./winring0/source/dll/",
+  ]
   defines += [
     "_SECURE_ATL",
+    "_PHYSICAL_MEMORY_SUPPORT",
+    "RUN_TIME_DYNAMIC_LINKING",
   ]
   if (is_debug) {
-    defines += [ "RUN_TIME_DYNAMIC_LINKING", ]
     ldflags += [
       "/NODEFAULTLIB:uafxcwd.lib",
       "/NODEFAULTLIB:libcmtd.lib",
