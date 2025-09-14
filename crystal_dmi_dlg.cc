@@ -11,8 +11,8 @@
 #include "crystal_dmi.h"
 #include "crystal_dmi_dlg.h"
 
-#include "ols_def.h"
-#include "ols_api_init.h"
+#include "OlsDef.h"
+#include "OlsApiInit.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -222,6 +222,8 @@ CString CCrystalDMIDlg::PrintHeader(DmiHeader* dmi)
 //#define MAKEWORD(a,b)		((b<<8)+a))
 #define MAKEDWORD(a,b,c,d)	((d<<24)+(c<<16)+(b<<8)+(a))
 
+static FILE* fDummyFile;
+
 /////////////////////////////////////////////////////////////////////////////
 // CCrystalDMIDlg 
 BOOL CCrystalDMIDlg::OnInitDialog()
@@ -236,6 +238,15 @@ BOOL CCrystalDMIDlg::OnInitDialog()
 
 
 	m_IsNT = IsNT();
+
+  // Allow and allocate conhost
+  if (!AllocConsole()) {
+    return false;
+  }
+  // File handler pointer to a dummy file, possibly an actual logfile
+  FILE* fNonExistFile = fDummyFile;
+  freopen_s(&fNonExistFile, "CONOUT$", "w", stdout);
+  freopen_s(&fNonExistFile, "CONOUT$", "w", stderr);
 
 	m_hOpenLibSys = NULL;
 	if(InitOpenLibSys(&m_hOpenLibSys) != TRUE)
