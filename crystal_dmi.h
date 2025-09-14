@@ -35,7 +35,7 @@
 #define		CRYSTAL_DMI_STATUS		_T("") // Alpha, Beta...
 #endif
 
-#define		CRYSTAL_DMI_VERSION		_T("1.0.6")
+#define		CRYSTAL_DMI_VERSION		_T("1.0.6.1")
 
 ////////////
 // URL

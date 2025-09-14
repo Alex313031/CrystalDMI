@@ -25,8 +25,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,6,0
- PRODUCTVERSION 1,0,6,0
+ FILEVERSION 1,0,6,1
+ PRODUCTVERSION 1,0,6,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -44,12 +44,12 @@ BEGIN
             VALUE "Comments", "The modified BSD license"
             VALUE "CompanyName", "Crystal Dew World (http://crystalmark.info/)"
             VALUE "FileDescription", "CrystalDMI"
-            VALUE "FileVersion", "1.0.6.0"
+            VALUE "FileVersion", "1.0.6.1"
             VALUE "InternalName", "CrystalDMI"
             VALUE "LegalCopyright", "Copyright (C) 2004-2010 hiyohiyo"
             VALUE "OriginalFilename", "CrystalDMI.exe"
             VALUE "ProductName", "CrystalDMI"
-            VALUE "ProductVersion", "1.0.6.0"
+            VALUE "ProductVersion", "1.0.6.1"
         END
     END
     BLOCK "VarFileInfo"
